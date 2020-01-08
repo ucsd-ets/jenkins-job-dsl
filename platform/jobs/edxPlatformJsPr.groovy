@@ -91,11 +91,15 @@ Map privateIronwoodJobConfig = [
     triggerPhrase: /.*ironwood\W+run\W+js.*/
 ]
 
+// List jobConfigs = [
+//     publicJobConfig,
+//     privateJobConfig,
+//     publicIronwoodJobConfig,
+//     privateIronwoodJobConfig
+// ]
+
 List jobConfigs = [
-    publicJobConfig,
-    privateJobConfig,
-    publicIronwoodJobConfig,
-    privateIronwoodJobConfig
+    publicJobConfig
 ]
 
 /* Iterate over the job configurations */
@@ -108,7 +112,7 @@ jobConfigs.each { jobConfig ->
             authorization GENERAL_PRIVATE_JOB_SECURITY()
         }
         properties {
-              githubProjectUrl("https://github.com/edx/${jobConfig.repoName}/")
+              githubProjectUrl("https://github.com/ucsd-ets/${jobConfig.repoName}/")
         }
         logRotator JENKINS_PUBLIC_LOG_ROTATOR(7)
         concurrentBuild()
@@ -125,7 +129,7 @@ jobConfigs.each { jobConfig ->
         scm {
             git {
                 remote {
-                    url("git@github.com:edx/${jobConfig.repoName}.git")
+                    url("git@github.com:ucsd-ets/${jobConfig.repoName}.git")
                     refspec('+refs/pull/*:refs/remotes/origin/pr/*')
                     credentials('jenkins-worker')
                 }

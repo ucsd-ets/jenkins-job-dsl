@@ -208,21 +208,27 @@ Map privateQualityIronwoodJobConfig = [
     pythonVersion: '2.7',
 ]
 
+// List jobConfigs = [
+//     publicBokchoyJobConfig,
+//     privateBokchoyJobConfig,
+//     publicBokchoyIronwoodJobConfig,
+//     privateBokchoyIronwoodJobConfig,
+//     publicLettuceIronwoodJobConfig,
+//     privateLettuceIronwoodJobConfig,
+//     publicPythonJobConfig,
+//     privatePythonJobConfig,
+//     publicPythonIronwoodJobConfig,
+//     privatePythonIronwoodJobConfig,
+//     publicQualityJobConfig,
+//     privateQualityJobConfig,
+//     publicQualityIronwoodJobConfig,
+//     privateQualityIronwoodJobConfig
+// ]
+
 List jobConfigs = [
     publicBokchoyJobConfig,
-    privateBokchoyJobConfig,
-    publicBokchoyIronwoodJobConfig,
-    privateBokchoyIronwoodJobConfig,
-    publicLettuceIronwoodJobConfig,
-    privateLettuceIronwoodJobConfig,
     publicPythonJobConfig,
-    privatePythonJobConfig,
-    publicPythonIronwoodJobConfig,
-    privatePythonIronwoodJobConfig,
-    publicQualityJobConfig,
-    privateQualityJobConfig,
-    publicQualityIronwoodJobConfig,
-    privateQualityIronwoodJobConfig
+    publicQualityJobConfig
 ]
 
 /* Iterate over the job configurations */
@@ -237,7 +243,7 @@ jobConfigs.each { jobConfig ->
                 authorization GENERAL_PRIVATE_JOB_SECURITY()
             }
             properties {
-                githubProjectUrl("https://github.com/edx/${jobConfig.repoName}/")
+                githubProjectUrl("https://github.com/ucsd-ets/${jobConfig.repoName}/")
             }
             logRotator JENKINS_PUBLIC_LOG_ROTATOR(7)
             environmentVariables(
