@@ -13,8 +13,10 @@ job('build-packer-ami') {
     authorization JENKINS_PUBLIC_TEAM_SECURITY.call(['edx*testeng'])
 
     parameters {
-        stringParam('REMOTE_BRANCH', 'master',
-                    'Branch of the configuration repo to use.')
+        stringParam('REMOTE_BRANCH', 'jenkins-test',
+                    'Branch of the ucsd configuration repo to use.')
+        stringParam('REMOTE_EDX_CONF_BRANCH', 'open-release/ironwood.master',
+                    'Branch of the edx configuration repo to use.')
         choiceParam('PACKER_JSON',
                     [ 'jenkins_worker.json',
                       'webpagetest.json',
@@ -31,7 +33,7 @@ job('build-packer-ami') {
                     'What should we do with the AMI if it is ' +
                     'successfully built? (Hint: delete means you are ' +
                     'just testing the process.)')
-        stringParam('JENKINS_WORKER_AMI', 'ami-aa2ea6d0',
+        stringParam('JENKINS_WORKER_AMI', 'ami-0994c095691a46fb5',
                     'Base ami on which to run the Packer script')
     }
 
@@ -39,16 +41,28 @@ job('build-packer-ami') {
     concurrentBuild(true)
     label('coverage-worker')
 
-    scm {
+    multiscm {
+        git {
+            remote {
+                url('https://github.com/ucsd-ets/openedx-config')
+            }
+            branch('\${REMOTE_BRANCH}')
+            extensions {
+                cleanBeforeCheckout()
+                relativeTargetDirectory('openedx-config')
+            }
+        }
         git {
             remote {
                 url('https://github.com/edx/configuration')
             }
-            branch('\${REMOTE_BRANCH}')
-            browser()
+            branch('\${REMOTE_EDX_CONF_BRANCH}')
+            extensions {
+                cleanBeforeCheckout()
+                relativeTargetDirectory('configuration')
+            }
         }
     }
-
     triggers {
         cron('@daily')
     }
@@ -83,7 +97,7 @@ job('build-packer-ami') {
     publishers {
         // alert team of failures via slack & email
         configure GENERAL_SLACK_STATUS()
-        mailer('testeng@edx.org')
+        mailer('devops@arbisoft.com')
     }
 
 }
