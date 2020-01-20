@@ -45,6 +45,7 @@ job('build-packer-ami') {
         git {
             remote {
                 url('https://github.com/ucsd-ets/openedx-config')
+                credentials('jenkins-worker')
             }
             branch('\${REMOTE_BRANCH}')
             extensions {
@@ -63,9 +64,10 @@ job('build-packer-ami') {
             }
         }
     }
-    triggers {
-        cron('@daily')
-    }
+    // Disabled schedular for the time being
+    //triggers {
+    //    cron('@daily')
+    //}
 
     wrappers {
         timeout {

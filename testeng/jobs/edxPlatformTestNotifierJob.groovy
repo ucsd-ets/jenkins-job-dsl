@@ -45,7 +45,7 @@ job('edx-platform-test-notifier') {
     }
 
     publishers {
-        mailer('testeng@edx.org')
+        mailer('devops@arbisoft.com')
         configure GENERAL_SLACK_STATUS()
     }
 }

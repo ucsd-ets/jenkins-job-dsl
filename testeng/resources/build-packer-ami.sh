@@ -13,6 +13,6 @@ export NEW_RELIC_KEY=${NEW_RELIC_KEY}
 # Activate the Python virtualenv
 . $HOME/edx-venv/bin/activate
 
-cd util/packer
+cd openedx-config/util/packer
 echo $PWD
 packer build $PACKER_JSON
